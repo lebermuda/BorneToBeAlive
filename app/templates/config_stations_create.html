@@ -1,0 +1,60 @@
+{% extends 'base.html' %}
+
+{% block content %}
+    <h1 class="text-center pt-3 mb-3">Création d'une configuration de Station</h1>
+    <div class="custom-box p-3 m-3">
+        <div class="row">
+            <div class="col col-8">
+                <form method="post">
+                    <div class="row mb-3">
+                        <label for="name" class="col col-sm-2 col-form-label">Nom</label>
+                        <div class="col col-sm-10">
+                            <input type="text" class="form-control" name="name" id="name" required>
+                            <div class="invalid-feedback">
+                                Veuillez spécifier un nom pour cette configuration de stations.
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row mb-3">
+                        <label for="n_stations" class="col col-sm-2 col-form-label">Stations de
+                            recharge</label>
+                        <div class="col col-sm-10">
+                            <input type="number" class="form-control simu_form" id="n_stations" min="1"
+                                   value="1" required name="n_stations">
+                            <div class="invalid-feedback">
+                                Veuillez spécifier un nombre de stations de recharge.
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row mb-3">
+                        <label for="bornes" class="col col-sm-2 col-form-label">
+                            Stations
+                            <p></p>
+                            <button title="Informations sur les aires de repos de l'A6" type="button"
+                                    class="btn btn-secondary d-inline" onclick="window.open('/aires');">
+                                Infos
+                            </button>
+                        </label>
+
+                        <div class="col col-sm-10">
+                            <div class="row" id="stations">
+
+                            </div>
+                        </div>
+                    </div>
+
+                    <button title="Sauvegarder cette configuration de stations" type="submit" class="btn btn-success">
+                        Sauvegarder
+                    </button>
+                </form>
+            </div>
+            <div class="col col-4">
+                <img id="map_img" src="../static/images/a6.png" alt="map">
+                <canvas id="map_canvas" class="mb-3 canvas">
+                </canvas>
+            </div>
+        </div>
+
+    </div>
+    <script src="../static/js/stations.js"></script>
+{% endblock %}

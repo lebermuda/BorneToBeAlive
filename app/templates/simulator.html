@@ -1,0 +1,432 @@
+{% extends 'base.html' %}
+
+{% block header %}
+{% endblock %}
+
+{% block content %}
+    <section class="content">
+        <div class="container-fluid vh-100 p-0">
+            <div class="row align-items-start">
+                <div class="col col-5 vh-100">
+                    <div class="vh-100 simu text-center pt-3">
+                        <h1>Simulation</h1>
+                        <form method="post" id="form" enctype="multipart/form-data">
+                            <div class="container mt-3 mb-3">
+                                <div class="row align-items-center">
+                                    <div class="col col-2">
+                                        <label for="scenario" class="col-form-label">Scénario</label>
+                                    </div>
+                                    <div class="col col-4">
+                                        <select id="scenario" class="form-select"
+                                                aria-label="Default select example" name="scenario">
+                                            {% for s in scenarios %}
+                                                <option value="{{ s.id }}"
+                                                        {% if scenario.id == s.id %}selected{% endif %}>{{ s.name }}</option>
+                                            {% endfor %}
+                                            <option value="999" {% if scenario.name == "" %}selected{% endif %}>Scénario
+                                                personnalisé
+                                            </option>
+                                        </select>
+                                    </div>
+                                    <div class="col col-6 row" id="scenario_name_div">
+                                        <label for="scenario_name" class="col col-6 col-form-label">Nom du
+                                            scénario</label>
+                                        <div class="col col-6">
+                                            <input type="text" class="form-control simu_form" id="scenario_name"
+                                                   required name="scenario_name"
+                                                   value="{{ scenario.name }}">
+                                            <div class="invalid-feedback">
+                                                Veuillez spécifier un nom pour ce scénario.
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="container p-3 mt-3 mb-3 custom-box text-center">
+                                    <h3>Fichier Scénario Fait Main</h3>
+                                    <div class="mb-3 row">
+                                        <label for="file_scenario" class="col col-sm-3 col-form-label">Fichier
+                                            Scénario</label>
+                                        <div class="col col-sm-8">
+                                            <input class="form-control" type="file" id="file_scenario"
+                                                   name="file_scenario" accept="json" onchange="blockInputs()">
+                                        </div>
+                                        <div class="col col-sm-1">
+                                            <button class="btn btn-sm btn-outline-secondary" type="button"
+                                                    onclick="document.getElementById('file_scenario').value=null; blockInputs()">
+                                                ✕
+                                            </button>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="container p-3 mt-3 mb-3 custom-box text-center">
+                                    <h3>Paramètres</h3>
+                                    <div class="mb-3 row">
+                                        <label for="autoroute" class="col col-sm-3 col-form-label">Autoroute</label>
+                                        <div class="col col-sm-9">
+                                            <select id="autoroute" class="form-select simu_form"
+                                                    aria-label="Default select example" name="autoroute">
+                                                <option value="A6"
+                                                        {% if scenario.autoroute == "A6" %}selected{% endif %}>A6
+                                                </option>
+                                                <option value="1">Autres autoroutes</option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                    <div class="row mb-3 d-none">
+                                        <label for="n_stations" class="col col-sm-3 col-form-label">Stations de
+                                            recharge </label>
+                                        <div class="col col-sm-9">
+                                            <input type="number" class="form-control simu_form" id="n_stations" min="1"
+                                                   value="{% if scenario.stations and scenario.stations|length > 0 %}
+                                                            {{ scenario.stations|length }}
+                                                          {% else %}
+                                                            1
+                                                          {% endif %}
+                                                         "
+                                                   required name="n_stations">
+                                            <div class="invalid-feedback">
+                                                Veuillez spécifier un nombre de stations de recharge.
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="row mb-3 d-none">
+                                        <label for="bornes" class="col col-sm-3 col-form-label">Stations</label>
+                                        <div class="col col-sm-9">
+                                            <div class="row" id="stations">
+                                                {% if scenario.stations %}
+                                                    {% for station in scenario.stations %}
+                                                        <div class="col col-6 custom-box2 p-1 mb-2"
+                                                             id="station_"{{ loop.index }}>
+                                                            <div class='row mb-1'>
+                                                                <label title='Emplacement de la station {{ loop.index }}'
+                                                                       for='emplacement{{ loop.index }}'
+                                                                       class='col-sm-6 col-form-label col-form-label-sm'>
+                                                                    Emplacement
+                                                                </label>
+                                                                <div class='col-sm-4'>
+                                                                    {% set t = station['emplacement'+loop.index|string] %}
+                                                                    <input type='number'
+                                                                           class='form-control form-control-sm simu_form'
+                                                                           id='emplacement{{ loop.index }}'
+                                                                           name='emplacement{{ loop.index }}' required
+                                                                           value='{{ t }}' min='0'>
+                                                                    <div class='invalid-feedback'>
+                                                                        Veuillez spécifier un emplacement pour la
+                                                                        station.
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                            <div class='row mb-1'>
+                                                                <label title='Nombre de bornes de type A'
+                                                                       for='station{{ loop.index }}_typeA'
+                                                                       class='col-sm-6 col-form-label col-form-label-sm'>
+                                                                    Bornes Types A
+                                                                </label>
+                                                                <div class='col-sm-4'>
+                                                                    {% set t = station['station'+loop.index|string+'_typeA'] %}
+                                                                    <input type='number'
+                                                                           class='form-control form-control-sm simu_form'
+                                                                           id='station{{ loop.index }}_typeA'
+                                                                           name='station{{ loop.index }}_typeA' required
+                                                                           value='{{ t }}' min='0'>
+                                                                    <div class='invalid-feedback'>
+                                                                        Veuillez spécifier une quantité de bornes de
+                                                                        type A.
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                            <div class='row mb-1'>
+                                                                <label title='Nombre de bornes de type B'
+                                                                       for='station{{ loop.index }}_typeB'
+                                                                       class='col-sm-6 col-form-label col-form-label-sm'>
+                                                                    Bornes Types B
+                                                                </label>
+                                                                <div class='col-sm-4'>
+                                                                    {% set t = station['station'+loop.index|string+'_typeB'] %}
+                                                                    <input type='number'
+                                                                           class='form-control form-control-sm simu_form'
+                                                                           id='station{{ loop.index }}_typeB'
+                                                                           name='station{{ loop.index }}_typeB' required
+                                                                           value='{{ t }}' min='0'>
+                                                                    <div class='invalid-feedback'>
+                                                                        Veuillez spécifier une quantité de bornes de
+                                                                        type B.
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    {% endfor %}
+                                                {% endif %}
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <label title="Configuration permettant de définir les stations, avec leur emplacement et la quantité de chaque type de bornes électriques."
+                                               for="scenario_stations" class="col col-sm-3 col-form-label">
+                                            Configuration de stations
+                                        </label>
+                                        <div class="col col-sm-5">
+                                            <select id="scenario_stations" class="form-select simu_form"
+                                                    aria-label="Default select example"
+                                                    name="scenario_stations" required>
+                                                {% for station in stations_configs %}
+                                                    <option id="config{{ station.id }}" value="{{ station.id }}"
+                                                            {% if scenario.stations_id == station.id %}selected{% endif %}>
+                                                        {{ station.name }}
+                                                    </option>
+                                                {% endfor %}
+                                            </select>
+                                            <div class="invalid-feedback">
+                                                Veuillez choisir une configuration de stations.
+                                            </div>
+                                        </div>
+                                        <div class="col col-sm-4">
+                                            <a type="button" id="btn_voitures"
+                                               class="btn btn-sm btn-outline-primary mt-1 simu_form"
+                                               href="/stations/new">Nouvelle
+                                            </a>
+                                            <a type="button" id="btn_voitures"
+                                               class="btn btn-sm btn-outline-secondary mt-1 simu_form"
+                                               href=''
+                                               onclick="this.href='/stations/'+document.getElementById('scenario_stations').value">Modifier
+                                            </a>
+                                        </div>
+                                    </div>
+                                    <div class="row mb-3 justify-content-between">
+                                        <label for="duree" class="col col-sm-3 col-form-label">
+                                            Durée
+                                        </label>
+                                        <div class="col col-4" id="duree">
+                                            <div class="row">
+                                                <label for="h" class="col col-sm-5 col-form-label">
+                                                    Heure
+                                                </label>
+                                                <div class="col col-sm-7">
+                                                    <input type="number" class="form-control simu_form" id="h"
+                                                           min="0" max="24" value="{{ scenario.h }}" step="1" required
+                                                           name="h">
+                                                    <div class="invalid-feedback">
+                                                        Veuillez spécifier une heure de début.
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col col-4">
+                                            <div class="row">
+                                                <label for="min" class="col col-sm-5 col-form-label">
+                                                    Minutes
+                                                </label>
+                                                <div class="col col-sm-7">
+                                                    <input type="number" class="form-control simu_form" id="min"
+                                                           min="0" max="59" value="{{ scenario.min }}" step="1" required
+                                                           name="min">
+                                                    <div class="invalid-feedback">
+                                                        Veuillez spécifier une heure de fin.
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="row mb-3">
+                                        <label for="n_voitures" class="col col-sm-3 col-form-label">Nombre de
+                                            voitures</label>
+                                        <div class="col col-sm-9">
+                                            <input type="number" class="form-control simu_form to_be_blocked_if_file" id="n_voitures"
+                                                   min="1" value="{{ scenario.n_voitures }}" step="1" required
+                                                   name="n_voitures">
+                                            <div class="invalid-feedback">
+                                                Veuillez spécifier un nombre voitures.
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <label title="Configuration permettant de définir les types de voitures et leur proportions qui circulent sur l'autoroute."
+                                               for="scenario_voitures" class="col col-sm-3 col-form-label">
+                                            Configuration de voitures
+                                        </label>
+                                        <div class="col col-sm-5">
+                                            <select id="scenario_voitures"
+                                                    class="form-select simu_form to_be_blocked_if_file"
+                                                    aria-label="Default select example" name="scenario_voitures"
+                                                    required>
+                                                {% for config in voitures_configs %}
+                                                    <option id="config{{ config.id }}" value="{{ config.id }}"
+                                                            {% if scenario.voitures_id == config.id %}selected{% endif %}>
+                                                        {{ config.name }}
+                                                    </option>
+                                                {% endfor %}
+                                            </select>
+                                            <div class="invalid-feedback">
+                                                Veuillez choisir une configuration de voitures.
+                                            </div>
+                                        </div>
+                                        <div class="col col-sm-4">
+                                            <a type="button" id="btn_voitures"
+                                               class="btn btn-sm btn-outline-primary mt-1 simu_form"
+                                               href="/voitures/new">Nouvelle
+                                            </a>
+                                            <a type="button" id="btn_voitures"
+                                               class="btn btn-sm btn-outline-secondary mt-1 simu_form"
+                                               href=''
+                                               onclick="this.href='/voitures/'+document.getElementById('scenario_voitures').value">Modifier
+                                            </a>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <label title="Configuration permettant de définir les parcours de chaque usagers sur l'autoroute."
+                                               for="scenario_trajets" class="col col-sm-3 col-form-label">Configuration
+                                            de
+                                            trajets</label>
+                                        <div class="col col-sm-5">
+                                            <select id="scenario_trajets"
+                                                    class="form-select simu_form to_be_blocked_if_file"
+                                                    aria-label="Default select example" name="scenario_trajets">
+                                                {% for config in trajets_configs %}
+                                                    <option id="trajets{{ config.id }}" value="{{ config.id }}"
+                                                            {% if scenario.trajets_id == config.id %}selected{% endif %}>
+                                                        {{ config.name }}
+                                                    </option>
+                                                {% endfor %}
+                                            </select>
+                                            <div class="invalid-feedback">
+                                                Veuillez choisir une configuration de trajets usagers.
+                                            </div>
+                                        </div>
+                                        <div class="col col-sm-4">
+                                            <a type="button" id="btn_new_trajet"
+                                               class="btn btn-sm btn-outline-primary mt-1 simu_form"
+                                               href="/trajets/new">Nouvelle
+                                            </a>
+                                            <a type="button" id="btn_trajet"
+                                               class="btn btn-sm btn-outline-secondary mt-1 simu_form"
+                                               href=''
+                                               onclick="this.href='/trajets/'+document.getElementById('scenario_trajets').value">Modifier
+                                            </a>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row justify-content-center">
+                                    <div class="col col-2">
+                                        <button onclick=run_simulation() id="simulate_btn"
+                                                class="btn btn-lg btn-success mb-3"
+                                                type="button">Simuler
+                                        </button>
+                                        <div class="row d-none" id="loader">
+                                            <div class="col-12">
+                                                <div class="spinner-border text-success" role="status">
+                                                    <span class="sr-only">Simulation en cours...</span>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col col-2">
+                                        <button title="Sauvegarder le scénario"
+                                                id="save_btn"
+                                                class="btn btn-lg btn-secondary mb-3"
+                                                type="submit"
+                                                formaction="/scenario/save">Sauvegarder
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+                <div class="col vh-100 p-0 m-0">
+                    <div class="container h-75 text-center pt-3">
+                        <h1>Résultats</h1>
+                        <div class="row h-100 mt-3">
+                            <div class="col-6">
+                                <img id="map_img" src="../static/images/a6.png" alt="map">
+                                <canvas id="map_canvas" class="mb-3 canvas">
+                                </canvas>
+                                <p class="mb-1">Fluidité</p>
+                                <div class="m-auto"
+                                     style="width: 100px; height:10px; background-image: linear-gradient(to right, rgb(221, 68, 68) , rgb(85, 204, 221));"></div>
+                            </div>
+                            <div id="simu_results" class="col-6 flex flex-column d-none">
+                                <div class="flex flex-column">
+                                    <div class="container custom-box pt-3 pb-3 mb-3">
+                                        <h3>Informations Globales</h3>
+                                        <div class="container mb-3">
+                                            <div class="row">
+                                                <div title="Temps d'attende moyen" class="col-sm-8">
+                                                    Temps d'attente Moyen :
+                                                </div>
+                                                <div id="temps_attente_moyen_g" class="col-sm-4">
+                                                    00
+                                                </div>
+                                            </div>
+                                            <div class="row">
+                                                <div title="Temps de charge moyen" class="col-sm-8">
+                                                    Temps de charge Moyen :
+                                                </div>
+                                                <div id="temps_charge_moyen_g" class="col-sm-4">
+                                                    00
+                                                </div>
+                                            </div>
+                                            <div class="row">
+                                                <div class="col-sm-8">
+                                                    Proportion de temps de route Moyen :
+                                                </div>
+                                                <div id="proportion_roule_g" class="col-sm-4">
+                                                    00%
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="container custom-box pt-3 pb-3 mb-3">
+                                        <h3>Informations Station <p class="d-inline station_index"></p>/<p
+                                                class="d-inline station_amount"></p></h3>
+                                        <div class="container mb-3">
+                                            <div class="row">
+                                                <div title="Temps d'attende Moyen" class="col-sm-8">
+                                                    Temps d'attente Moyen :
+                                                </div>
+                                                <div id="temps_moyen" class="col-sm-4 temps_moyen_borne">
+                                                    00
+                                                </div>
+                                            </div>
+                                            <div class="row">
+                                                <div class="col-sm-8">
+                                                    Proportion de l'usage:
+                                                </div>
+                                                <div id="attente" class="col-sm-4 proportion_use_borne">
+                                                    00%
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="container">
+                                    <canvas id="station_chart" width="400" height="400"></canvas>
+                                </div>
+                                <div class="mx-3 mt-1">
+                                    <div id="station_nav" class="row justify-content-center">
+                                        <div class="col col-1 btn btn-sm btn-secondary rounded"
+                                             onclick="changeStation(-1)"><i
+                                                class="fa fa-arrow-left"></i>
+                                        </div>
+                                        <label for="station_index"
+                                               class="col col-2 col-form-label-sm">Station</label>
+                                        <div class="col col-sm-3 px-3">
+                                            <input id="station_index" class="form-control form-control-sm"
+                                                   name="station_index">
+                                        </div>
+                                        <div class="col col-1 btn btn-sm btn-secondary rounded"
+                                             onclick="changeStation(1)"><i
+                                                class="fa fa-arrow-right"></i>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </section>
+    <script src="../static/js/stations.js"></script>
+    <script src="../static/js/simulator.js"></script>
+{% endblock %}

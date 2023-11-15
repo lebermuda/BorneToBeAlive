@@ -1,0 +1,9 @@
+{
+  "Renault_Zoé_50_R110": {"autonomie_max":390,"capacite": 52},
+  "Renault_Zoé_50_R135": {"autonomie_max":390,"capacite": 52},
+  "Renault_Zoé_40_R110": {"autonomie_max":325,"capacite": 41},
+  "Renault_Zoé_40_R75": {"autonomie_max":325,"capacite": 41},
+  "Renault_Zoé_40_R90": {"autonomie_max":325,"capacite": 41},
+  "Renault_Zoé_40_Q90": {"autonomie_max":301,"capacite": 41},
+  "Tesla_Model_3_Performance": {"autonomie_max":547,"capacite": 76}
+}

@@ -1,0 +1,38 @@
+{
+  "Route": {
+    "nom": "A6",
+    "km" : 445
+  },
+  "Sorties": [
+    {"nom": "Cély","numero":13, "location": 47 },
+    {"nom": "Urly","numero":14, "location": 61 },
+    {"nom": "Fontainebleau","numero":15, "location":  70 },
+    {"nom": "Nemours","numero":16, "location": 72 },
+    {"nom": "Echangeur A77","numero":0, "location": 80 },
+    {"nom": "Courtenay","numero":17, "location": 111 },
+    {"nom": "Joigny","numero":18, "location": 128 },
+    {"nom": "Auxerre Nord","numero":19, "location": 154 },
+    {"nom": "Auxerre Sud","numero":20, "location": 165 },
+    {"nom": "Nitry","numero":21, "location": 190 },
+    {"nom": "Avallon","numero":22, "location": 209 },
+    {"nom": "Bierre-les-Semur","numero":23, "location": 235 },
+    {"nom": "Echangeur A38","numero":0, "location": 264 },
+    {"nom": "Beaune Nord","numero":24, "location": 301 },
+    {"nom": "Echangeur A31","numero":0, "location": 304 },
+    {"nom": "Beaune","numero": 24.1 , "location": 307 },
+    {"nom": "Chalon Nord","numero": 25 , "location": 329 },
+    {"nom": "Chalon Sud","numero": 26 , "location": 335 },
+    {"nom": "Tournus","numero": 27 , "location": 355 },
+    {"nom": "Macon Nord","numero": 28 , "location": 381 },
+    {"nom": "Echangeur A40","numero": 0 , "location": 383 },
+    {"nom": "Macon Sud","numero":29, "location": 391 },
+    {"nom": "Belleville-sur-Saone","numero":30, "location": 412 },
+    {"nom": "Villefranche Nord","numero":31.1, "location": 421 },
+    {"nom": "Villefranche Sud","numero":31.2, "location": 426 },
+    {"nom": "Echangeur A46","numero":0, "location": 431 },
+    {"nom": "Anse","numero":32, "location":433  },
+    {"nom": "Echangeur A466","numero":0, "location": 437 },
+    {"nom": "Echangeur A89","numero":0, "location": 442 },
+    {"nom": "Limonest","numero":33, "location": 445 }
+  ]
+}

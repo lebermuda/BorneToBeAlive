@@ -1,0 +1,39 @@
+.simu {
+    background-color: #EEE;
+    border-right: 2px solid #DDD;
+}
+
+.custom-box {
+    background-color: #DFDFDF;
+    border-radius: 10px;
+    border: 2px solid #BBB;
+}
+
+.custom-box2 {
+    border-left: 2px solid #BBBBBB;
+    border-radius: 10px;
+}
+
+.custom-box3 {
+    background-color: white;
+    border-radius: 10px;
+    border: 2px solid #DFDFDF;
+}
+
+.canvas {
+    border: 2px solid white;
+}
+
+.canvas_focus {
+    border: 2px solid #888;
+}
+
+.offset-p1 {
+    margin-left: -30px;
+}
+
+.btn-square-xs {
+    padding: 0 !important;
+    width: 1.4rem;
+    font-size: .875rem !important;
+}

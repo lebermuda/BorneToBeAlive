@@ -1,0 +1,75 @@
+{% extends 'base.html' %}
+
+{% block content %}
+    <h1 class="text-center pt-3 mb-3">Création d'une configuration de voitures</h1>
+    <div class="container custom-box3 p-3">
+        <form method="post">
+            <div class="row mb-3">
+                <label for="name" class="form-label col col-1 col-form-label">Nom</label>
+                <div class="col col-11">
+                    <input type="text" class="form-control" name="name" id="name" required>
+                </div>
+            </div>
+            {% set n_types=3 %}
+            {% set carac_v = [("Tesla_Model_3_Performance",547,76),("Renault_Zoé_50_R110",390,52),("Renault_Zoé_40_Q90",301,41)] %}
+            {% for type in range(n_types) %}
+                <div class="row">
+                    <label class="col col-5 col-form-label" for="type{{ type }}">{{ carac_v[type][0] }} ( autonomie max
+                        : {{ carac_v[type][1] }} km, puissance : {{ carac_v[type][2] }} )</label>
+                    <div class="col col-3">
+                        <input class="form-range" id="type{{ type }}" type="range" name="type{{ type }}"
+                               value="{% if type==0 %}100{% else %}0{% endif %}" step="1"
+                               oninput="document.getElementById('value'+{{ type }}).value = Math.round(this.value)">
+                    </div>
+                    <div class="col col-2">
+                        <div class="row">
+                            <div class="col">
+                                <input class="form-control form-control-sm" id="value{{ type }}"
+                                       value="{% if type==0 %}100{% else %}0{% endif %}"
+                                       oninput="document.getElementById('type'+{{ type }}).value = Math.round(this.value)">
+                            </div>
+                            <p class="col d-inline">% </p>
+                        </div>
+                    </div>
+                </div>
+            {% endfor %}
+            <div class="mb-3 d-none">
+                <table>
+                    <tr>
+                        <td>Type de Voiture</td>
+                        {% for dt in range(4) %}
+                            <td>Heure {{ dt }}</td>
+                        {% endfor %}
+                    </tr>
+                    {% for voiture in range(2) %}
+                        <tr>
+                            <td>Voiture {{ voiture }}</td>
+                            {% for dt in range(4) %}
+                                <td><input class="form-control" type="number" min="0" max="1" step="0.01"></td>
+                            {% endfor %}
+                        </tr>
+                    {% endfor %}
+                </table>
+                <div>
+                    <input class="form-check-inline" type="checkbox" id="same_all_day" name="same_all_day" checked>
+                    <label for="same_all_day">Proportion identique tous le long de la journée</label>
+                </div>
+            </div>
+            <div class="d-none">
+                <p>Reste à faire :</p>
+                <ul>
+                    <li>Ajouter des lignes en choissisant de nouvelle voiture</li>
+                    <li>Dernière lignes toujours = complément à 1 de sa colonne</li>
+                    <li>Si checkbox checked => rendre toutes les colonnes égales</li>
+                    <li>Récupérer les champs => json avec type de voiture et tableau des proportion par exemple</li>
+
+                </ul>
+            </div>
+
+            <button title="Sauvegarder cette configuration de comportements" type="submit" class="btn btn-success">
+                Sauvegarder
+            </button>
+        </form>
+    </div>
+
+{% endblock %}

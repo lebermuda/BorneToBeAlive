@@ -1,0 +1,112 @@
+{% extends 'base.html' %}
+
+{% block content %}
+    <h1 class="text-center pt-3 mb-3">Configuration de Stations n°{{ stations.id }}</h1>
+    <form method="post" id="stations_form">
+        <div class="custom-box p-3 m-3">
+            <div class="row">
+                <div class="col col-8">
+                    <div class="row mb-3">
+                        <label for="name" class="col col-sm-3 col-form-label">Nom</label>
+                        <div class="col col-sm-9">
+                            <input type="text" class="form-control" name="name" id="name" required
+                                   value="{{ stations.name }}">
+                            <div class="invalid-feedback">
+                                Veuillez spécifier un nom pour cette configuration de stations.
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row mb-3">
+                        <label for="n_stations" class="col col-sm-3 col-form-label">Stations de
+                            recharge</label>
+                        <div class="col col-sm-9">
+                            <input type="number" class="form-control simu_form" id="n_stations" min="1"
+                                   value="{{ stations.stations|length }}"
+                                   required name="n_stations">
+                            <div class="invalid-feedback">
+                                Veuillez spécifier un nombre de stations de recharge.
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row mx-3">
+                        <div class="row" id="stations">
+                            {% for station in stations.stations %}
+                                <div class="col col-3 custom-box2 p-1 mb-2"
+                                     id="station_"{{ loop.index }}>
+                                <button class='btn btn-sm btn-outline-danger position-absolute btn-square-xs offset-p1'
+                                        title='Supprimer cette station' onclick='deleteStation({{ loop.index - 1 }})'
+                                        type='button'>✕</button>
+                                    <div class='row mb-1'>
+                                        <label title='Emplacement de la station {{ loop.index }}'
+                                               for='emplacement{{ loop.index }}'
+                                               class='col-sm-6 col-form-label col-form-label-sm'>
+                                            Emplacement
+                                        </label>
+                                        <div class='col-sm-4'>
+                                            {% set t = station['emplacement'] %}
+                                            <input type='number'
+                                                   class='form-control form-control-sm simu_form'
+                                                   id='emplacement{{ loop.index }}'
+                                                   name='emplacement{{ loop.index }}' required
+                                                   value='{{ t }}' min='0'>
+                                            <div class='invalid-feedback'>
+                                                Veuillez spécifier un emplacement pour la station.
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class='row mb-1'>
+                                        <label title='Nombre de bornes de type A'
+                                               for='station{{ loop.index }}_typeA'
+                                               class='col-sm-6 col-form-label col-form-label-sm'>
+                                            Bornes Types A
+                                        </label>
+                                        <div class='col-sm-4'>
+                                            {% set t = station['station_typeA'] %}
+                                            <input type='number'
+                                                   class='form-control form-control-sm simu_form'
+                                                   id='station{{ loop.index }}_typeA'
+                                                   name='station{{ loop.index }}_typeA' required
+                                                   value='{{ t }}' min='0'>
+                                            <div class='invalid-feedback'>
+                                                Veuillez spécifier une quantité de bornes de type A.
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class='row mb-1'>
+                                        <label title='Nombre de bornes de type B'
+                                               for='station{{ loop.index }}_typeB'
+                                               class='col-sm-6 col-form-label col-form-label-sm'>
+                                            Bornes Types B
+                                        </label>
+                                        <div class='col-sm-4'>
+                                            {% set t = station['station_typeB'] %}
+                                            <input type='number'
+                                                   class='form-control form-control-sm simu_form'
+                                                   id='station{{ loop.index }}_typeB'
+                                                   name='station{{ loop.index }}_typeB' required
+                                                   value='{{ t }}' min='0'>
+                                            <div class='invalid-feedback'>
+                                                Veuillez spécifier une quantité de bornes de type B.
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            {% endfor %}
+                        </div>
+
+                    </div>
+                </div>
+                <div class="col col-4">
+                    <img id="map_img" src="../static/images/a6.png" alt="map">
+                    <canvas id="map_canvas" class="mb-3 canvas">
+                    </canvas>
+                </div>
+            </div>
+        </div>
+        <div class="container custom-box3 p-3 w-25 d-flex justify-content-around">
+            <button class="btn btn-success" type="submit">Sauvegarder</button>
+            <a class="btn btn-outline-danger" href="/stations/delete/{{ stations.id }}">Supprimer</a>
+        </div>
+    </form>
+    <script src="../static/js/stations.js"></script>
+{% endblock %}

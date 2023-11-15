@@ -1,0 +1,49 @@
+{% extends 'base.html' %}
+
+{% block header %}
+{% endblock %}
+
+{% block content %}
+    <body>
+    <h1>Histogram Generator</h1>
+    <p>Enter the number of bars for your histogram:</p>
+    <form>
+      <input type="number" id="numBars" min="1" max="20">
+      <button type="button" onclick="generateHistogram()">Generate Histogram</button>
+    </form>
+    <br>
+    <div id="histogramContainer" style="height: 500px"></div>
+  </body>
+  <script>
+    function generateHistogram() {
+      // Get the number of bars from the input field
+      const numBars = document.getElementById('numBars').value;
+
+      // Create the histogram container div
+      const histogramContainer = document.getElementById('histogramContainer');
+
+      // Clear the histogram container
+      histogramContainer.innerHTML = '';
+
+      // Generate the bars for the histogram
+      for (let i = 0; i < numBars; i++) {
+        const bar = document.createElement('div');
+        bar.classList.add('histogramBar');
+        const barHeight = prompt(`Enter the height for bar ${i+1} (in %):`);  // Prompt the user for the height of the bar
+        bar.style.height = barHeight + '%';  // Set the height of the bar using the value from the prompt
+        histogramContainer.appendChild(bar);
+      }
+    }
+  </script>
+  <style>
+    /* Add some styling for the histogram */
+    .histogramBar {
+      display: inline-block;
+      width: 20px;
+      background-color: blue;
+      margin-right: 5px;
+    }
+  </style>
+
+
+{% endblock %}

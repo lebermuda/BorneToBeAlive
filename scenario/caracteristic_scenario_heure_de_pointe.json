@@ -1,0 +1,25 @@
+{
+  "nom": "vacance_ete",
+  "duree": {"heure": 9,"minute": 0},
+  "n_voiture": 150000,
+  "type_voiture": [ {"nom":"Tesla_Model_3_Performance","autonomie_max":547,"capacite": 76,"proportion": 0.3},
+                    {"nom":"Renault_Zoé_50_R110","autonomie_max":390,"capacite": 52, "proportion":0.7} ],
+  "repartition_voiture" : [0.2,0.1,0.1,0.1,0.1,0.1,0.1,0.1,0.1],
+  "type_trajet" : [ {"km_start": 10, "km_end": 80},
+                    {"km_start": 10, "km_end": 445},
+                    {"km_start": 383, "km_end": 445},
+                    {"km_start": 10, "km_end": 264},
+                    {"km_start": 235, "km_end": 442}
+  ],
+  "proportion_trajet_par_heure": [
+    [0.1,0.4,0.1,0.2,0.2],
+    [0.1,0.4,0.1,0.2,0.2],
+    [0.1,0.4,0.1,0.2,0.2],
+    [0.1,0.4,0.1,0.2,0.2],
+    [0.1,0.4,0.1,0.2,0.2],
+    [0.1,0.4,0.1,0.2,0.2],
+    [0.1,0.4,0.1,0.2,0.2],
+    [0.1,0.4,0.1,0.2,0.2],
+    [0.1,0.4,0.1,0.2,0.2]
+  ]
+}

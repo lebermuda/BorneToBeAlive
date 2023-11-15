@@ -1,0 +1,101 @@
+{% extends 'base.html' %}
+
+{% block content %}
+    <h1 class="text-center pt-3 mb-3">Configuration de trajets {{ trajets.id }}</h1>
+    <div class="container custom-box3 p-3">
+        <form method="post">
+            <div class="row mb-3">
+                <label for="name" class="form-label col col-2 col-form-label">Nom</label>
+                <div class="col col-10">
+                    <input type="text" class="form-control" name="name" id="name" value="{{ trajets.name }}">
+                </div>
+            </div>
+            <div class="row">
+                <label for="repartition_voiture" class="form-label col col-4 col-form-label">Répartition des voitures
+                    sur la durée de la simulation</label>
+                <div class="col col-sm-2">
+                    <input type="text" class="form-control" name="repartition_voiture" id="repartition_voiture"
+                           oninput="plotHistogram('distrib_canvas', this.id)"
+                           value="{{ trajets.repartition_voiture }}" required>
+                    <input type="text" name="repartition_voiture_formated" id="repartition_voiture_formated"
+                           class="d-none" value="{{ trajets.repartition_voiture }}">
+                </div>
+                <div class="col col-1">aperçu:</div>
+                <div class="col col-5">
+                    <canvas height="40px" width="400px" id="distrib_canvas" class="border-bottom"></canvas>
+                </div>
+            </div>
+            <div class="row">
+                <label for="n_trajets" class="form-label col col-2 col-form-label">Trajets possibles</label>
+                <div class="col col-sm-1">
+                    <input type="number" class="form-control" name="n_trajets" id="n_trajets"
+                           value="{{ trajets.type_trajet|length }}"
+                           onchange="drawTrajetInput()" required>
+                </div>
+                <div class="col col-7 mb-2" id="trajets">
+                    {% for i in range(trajets.type_trajet|length) %}
+                        <div class="row" id="trajet_{{ loop.index - 1}}">
+                            <div class='col col-2'>Trajet {{ loop.index - 1}}:</div>
+                            <label for="km_entree_{{ loop.index - 1}}" class="form-label col col-2 col-form-label">km
+                                d'entrée</label>
+                            <div class="col col-2">
+                                <input type="number" class="form-control form-control-sm"
+                                       name="km_entree_{{ loop.index - 1}}"
+                                       id="km_entree_{{ loop.index - 1}}"
+                                       value="{{ trajets.type_trajet[loop.index - 1]['km_start'] }}" required>
+                            </div>
+                            <label for="km_sortie_{{ loop.index - 1}}" class="form-label col col-2 col-form-label">km de
+                                sortie</label>
+                            <div class="col col-2">
+                                <input type="number" class="form-control form-control-sm"
+                                       name="km_sortie_{{ loop.index - 1}}"
+                                       id="km_sortie_{{ loop.index - 1}}"
+                                       value="{{ trajets.type_trajet[loop.index - 1]['km_end'] }}" required>
+                            </div>
+                        </div>
+                    {% endfor %}
+                </div>
+            </div>
+            <div class="row"
+                 title="Distribution discrète de probabilité de chaque type de trajet au cours de la simulation (histogramme) ">
+                <label class="form-label col col-4 col-form-label">Répartition de ces trajets au cours de la
+                    simulation</label>
+                <div class="col col-7 mb-2" id="trajets_distrib">
+                    {% for i in range(trajets.type_trajet|length) %}
+                        <div class="row" id="t_distrib_{{ loop.index - 1}}">
+                            <div class='col col-sm-4'>
+                                <input type="text" class="form-control" name="repartition_voiture"
+                                       id="distrib_trajet_{{ loop.index - 1}}"
+                                       oninput="plotHistogram('distrib_canvas_trajet_{{ loop.index - 1}}', this.id)"
+                                       value="{{ trajets.proportion_trajet_par_heure[loop.index - 1] }}"
+                                       required>
+                                <input type="text" name="distrib_trajet_{{ loop.index - 1}}_formated"
+                                       id="distrib_trajet_{{ loop.index - 1}}_formated"
+                                       class="d-none">
+                            </div>
+                            <div class='col col-2'>aperçu:</div>
+                            <div class='col col-6'>
+                                <canvas height="40px" width="400px" id="distrib_canvas_trajet_{{ loop.index - 1}}"
+                                        class="border-bottom"></canvas>
+                            </div>
+                        </div>
+                    {% endfor %}
+                </div>
+            </div>
+            <div class="row d-none">
+                <label for="distrib_entrees" class="form-label col col-5 col-form-label">Distribution des entrées de
+                    voitures sur l'autoroute</label>
+                <div class="col col-7">distrib input</div>
+            </div>
+            <div class="row d-none">
+                <label for="distrib_longueurs" class="form-label col col-5 col-form-label">Distribution des longueurs
+                    des trajets</label>
+                <div class="col col-7">distrib input</div>
+            </div>
+            <button title="Sauvegarder cette configuration de comportements" type="submit" class="btn btn-success">
+                Sauvegarder
+            </button>
+        </form>
+    </div>
+    <script src="../static/js/trajets_utils.js"></script>
+{% endblock %}

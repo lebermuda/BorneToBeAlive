@@ -1,0 +1,29 @@
+{
+  "nom": "jour_semaine",
+  "duree": {"heure": 14,"minute": 0},
+  "n_voiture": 100000,
+  "type_voiture": [ {"nom":"Tesla_Model_3_Performance","autonomie_max":547,"capacite": 76,"proportion": 0.2},
+                    {"nom":"Renault_Zoé_50_R110","autonomie_max":390,"capacite": 52, "proportion":0.7},
+                    {"nom":"Renault_Zoé_40_Q90","autonomie_max" : 301, "capacite" : 41 , "proportion":0.10}],
+
+  "repartition_voiture" : [0.25, 0.20, 0.5, 0.15, 0.5, 0.15, 0.15],
+  "type_trajet" : [ {"km_start": 10, "km_end": 46},
+                    {"km_start": 10, "km_end": 111},
+                    {"km_start": 10, "km_end": 335},
+                    {"km_start": 10, "km_end": 445},
+                    {"km_start": 381, "km_end": 445},
+                    {"km_start": 412, "km_end": 445},
+                    {"km_start": 61, "km_end": 301},
+                    {"km_start": 235, "km_end": 391}
+  ],
+  "proportion_trajet_par_heure": [
+    [0.25,0.25,0.15,0.25,0.15,0.25,0.25],
+    [0.2,0.2,0.15,0.2,0.15,0.2,0.2],
+    [0.05,0.05,0.15,0.05,0.15,0.05,0.05],
+    [0.05,0.05,0.15,0.05,0.15,0.05,0.05],
+    [0.15,0.15,0.1,0.15,0.1,0.15,0.15],
+    [0.2,0.2,0.15,0.2,0.15,0.2,0.2],
+    [0.05,0.05,0.15,0.05,0.15,0.05,0.05],
+    [0.05,0.05,0.15,0.05,0.15,0.05,0.05]
+  ]
+}

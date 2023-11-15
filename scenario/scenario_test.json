@@ -1,0 +1,12 @@
+{
+  "description": "Scénario de test",
+  "duree": {"heure": 5,"minute": 30},
+  "Voitures": [
+    {"autonomie":390,"start": 10,"end": 100 ,"km_after_end":0,"time_start": 0,"autonomie_max":390,"capacite": 52},
+    {"autonomie": 390,"start": 10,"end": 150,"km_after_end":0,"time_start": 0,"autonomie_max":390,"capacite": 52},
+    {"autonomie": 50,"start": 10,"end": 200,"km_after_end":0,"time_start": 0,"autonomie_max":390,"capacite": 52},
+    {"autonomie":50,"start": 10,"end":  200,"km_after_end":0,"time_start": 0,"autonomie_max":390,"capacite": 52},
+    {"autonomie": 50,"start": 10,"end": 200,"km_after_end":0,"time_start": 0,"autonomie_max":390,"capacite": 52},
+    {"autonomie": 50,"start": 10,"end": 200,"km_after_end":0,"time_start": 0,"autonomie_max":390,"capacite": 52}
+  ]
+}

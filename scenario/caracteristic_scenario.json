@@ -1,0 +1,7 @@
+{
+  "nom": "scenario_une_journee",
+  "duree": {"heure": 2,"minute": 0},
+  "type_voiture": [ {"nom":"Tesla_Model_3_Performance","autonomie_max":547,"capacite": 76,"proportion": 0.3},
+                    {"nom":"Renault_Zoé_50_R110","autonomie_max":390,"capacite": 52, "proportion":0.7} ],
+  "type_trajet" : [ {"km_start": 10, "km_end": 200}, {"km_start": 100, "km_end": 250}]
+}
